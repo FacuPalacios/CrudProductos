@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from "./components/pages/Home.jsx"
 import AcercaDeNosotros from './components/pages/AcercaDeNosotros.jsx'
 import Administracion from './components/pages/Administracion.jsx'
+import CrearProducto from './components/pages/sections/CrearProducto.jsx'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home />} /> {/* /: Cuando estoy en el inicio (google.com/), muestra el <Home/> */}
             <Route path="/acercadenosotros" element={<AcercaDeNosotros />} />
             <Route path="/administracion" element={<Administracion />} />
+            <Route path='/crear-producto' element={<CrearProducto/>} />
           </Routes>
         </main>
         <footer>

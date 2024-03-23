@@ -4,6 +4,8 @@ import { validarCategoria } from "../../helpers/validaciones";
 import clsx from "clsx";
 import * as Yup from "yup"; /*Clase 20 febrero 1:35 */
 import { useFormik } from "formik"; /*Clase 20 febrero 1:35 */
+import Swal from 'sweetalert2' /*Clase 22 febrero 0:50 */
+import { useNavigate } from "react-router-dom";
 
 const CrearProducto = () => {
     //Los productos van a tener las sig prop: Título, descripción, categoría. Además tendrá un identificador único
@@ -13,9 +15,17 @@ const CrearProducto = () => {
 
     // Con lo de arriba se lo hace a mano, abajo se usa Formik
 
+    //Utilizamos la variable de entorno
+    const API = import.meta.env.VITE_API;
+    //console.log("API--> ", API);
+
+    //Utilizamos useNavigate de react router dom
+    const navigate = useNavigate();
+    //Inicio config formik
+
     const ProductoSchema=Yup.object().shape({
         title: Yup.string().min(4, 'min 4 caract.').max(20, 'max 20 caract.').required('el titulo es requerido'),
-        description: Yup.string().min(4).max(200).required('la descripcion es requerida'),
+        description: Yup.string().min(4, 'min 4 caract.').max(200, 'max 200 caract.').required('la descripcion es requerida'),
         category: Yup.string().required('La categoría es requerida')
         }    
     );
@@ -29,10 +39,46 @@ const CrearProducto = () => {
         validationSchema: ProductoSchema,
         validateOnBlur: true,
         validateOnChange: true,
-        onSubmit: (value)=>{
-            console.log("Values de Formik --> ", value)
+        onSubmit: (values)=>{
+            console.log("Values de Formik --> ", values);
+            Swal.fire({
+                title: "¿Estás seguro de guardar este producto?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Guardar"
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        const response = await fetch(`${API}/productos`, {
+                            method: "POST",
+                            headers:{
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(values)
+                        });
+                        //console.log("RESPONSE: ", response);
+                        //console.log(response.status);
+                        if(response.status === 201){
+                            formik.resetForm();
+
+                            Swal.fire({
+                                title: "¡Éxito!",
+                                text: "Se creó un nuevo producto",
+                                icon: "success"
+                            });
+                        }
+                    } catch (error) {
+                        console.log("ERROR--> ", error);
+                    }
+                }
+              });
+            
+            
         }
     })
+    //Fin config formik
 
     /* Acá se crea la lógica para validar, antes del return */
     const handleSubmit=(e)=>{
@@ -48,9 +94,11 @@ const CrearProducto = () => {
 
     return (
         <div className="container py-3 my-3">
+            <Button variant="secondary" onClick={()=>navigate(-1)}>Atrás</Button> {/* -1: Detecta la ruta anterior*/}
             <div className="text-center">
                 <h2>Crear Productos</h2>
             </div>
+
             <Form onSubmit={formik.handleSubmit}> {/* handleSubmit: Ésto es para validar */}
                 <Form.Group className="mb-3" controlId="title">
                     <Form.Label>Título</Form.Label>
@@ -78,8 +126,20 @@ const CrearProducto = () => {
                     <Form.Control type="text" placeholder="Ingrese la descripción" as="textarea" rows={3} minLength={4} maxLength={200} /*value={description}
                     onChange={(e)=>{
                     setDescription(e.currentTarget.value);
-                    }}*/
-                    /> {/*as y rows es para espaciar la descripcion*/}
+                    }} {/*as y rows es para espaciar la descripcion* /} */
+                        name="description"
+                        {...formik.getFieldProps('description')}
+                        className={clsx('form-control',{
+                            'is-invalid': formik.touched.description && formik.errors.description
+                        },{
+                            'is-valid': formik.touched.description && !formik.errors.description
+                        })}
+                    />
+                    {formik.touched.description && formik.errors.description && (
+                        <div className="mt-2 text-danger fw-bolder">
+                            <span role='alert'>{formik.errors.description}</span>
+                        </div>
+                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="category">
@@ -92,12 +152,25 @@ const CrearProducto = () => {
                         "is-valid": validarCategoria(category)
                     },{
                         "is-invalid": !validarCategoria(category)
-                    })}*/>
+                    })}*/
+                        name="category"
+                        {...formik.getFieldProps('category')}
+                        className={clsx('form-control',{
+                            'is-invalid': formik.touched.category && formik.errors.category
+                        },{
+                            'is-valid': formik.touched.category && !formik.errors.category
+                        })}
+                    >
                         <option value=''>Seleccione una categoría</option>
                         <option value="bebidas">Bebidas</option>
                         <option value="alimentos">Alimentos</option>
                         <option value="limpieza">Limpieza</option>
                     </Form.Select>
+                    {formik.touched.category && formik.errors.category && (
+                        <div className="mt-2 text-danger fw-bolder">
+                            <span role='alert'>{formik.errors.category}</span>
+                        </div>
+                    )}
                 </Form.Group>
 
                 <Button variant="primary" type="submit">
