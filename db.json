@@ -1,0 +1,16 @@
+{
+  "productos": [
+    {
+      "id": "550b",
+      "title": "asdasdasd",
+      "description": "asdasdasd",
+      "category": "bebidas"
+    },
+    {
+      "id": "45ef",
+      "title": "producto2",
+      "description": "descripcion2",
+      "category": "limpieza"
+    }
+  ]
+}
