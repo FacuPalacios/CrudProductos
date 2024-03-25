@@ -5,6 +5,7 @@ import Home from "./components/pages/Home.jsx"
 import AcercaDeNosotros from './components/pages/AcercaDeNosotros.jsx'
 import Administracion from './components/pages/Administracion.jsx'
 import CrearProducto from './components/pages/sections/CrearProducto.jsx'
+import Editar from './components/pages/sections/Editar.jsx'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/acercadenosotros" element={<AcercaDeNosotros />} />
             <Route path="/administracion" element={<Administracion />} />
             <Route path='/crear-producto' element={<CrearProducto/>} />
+            <Route path='/editar/:id' element={<Editar/>}/> {/*id: Es un parámetro y es obligatorio (clase 27 febrero) */}
           </Routes>
         </main>
         <footer>

@@ -1,10 +1,10 @@
 {
   "productos": [
     {
-      "id": "550b",
-      "title": "asdasdasd",
-      "description": "asdasdasd",
-      "category": "bebidas"
+      "title": "producto1",
+      "description": "descripcion1",
+      "category": "bebidas",
+      "id": "550b"
     },
     {
       "id": "45ef",
