@@ -92,7 +92,7 @@ const Editar = () => {
 
 
         }
-    })
+    });
     //Fin config formik
 
     /* Acá se crea la lógica para validar, antes del return */
