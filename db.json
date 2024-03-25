@@ -1,15 +1,21 @@
 {
   "productos": [
     {
-      "id": "550b",
-      "title": "asdasdasd",
-      "description": "asdasdasd",
-      "category": "bebidas"
+      "title": "producto1",
+      "description": "descripcion1",
+      "category": "alimentos",
+      "id": "550b"
     },
     {
-      "id": "45ef",
       "title": "producto2",
       "description": "descripcion2",
+      "category": "alimentos",
+      "id": "45ef"
+    },
+    {
+      "id": "5b96",
+      "title": "producto3",
+      "description": "descripcion3",
       "category": "limpieza"
     }
   ]
